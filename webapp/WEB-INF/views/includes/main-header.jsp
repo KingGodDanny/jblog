@@ -17,7 +17,7 @@
 			<!-- 로그인 후 메뉴 -->
 			<c:if test="${not empty authUser }">
 				<li><a href="${pageContext.request.contextPath}/user/logout">로그아웃</a></li>
-				<li><a href="${pageContext.request.contextPath }/blog/main">내블로그</a></li>
+				<li><a href="${pageContext.request.contextPath }/${authUser.id}" target="_blank">내블로그</a></li>
 			</c:if>
  			
  		</ul>

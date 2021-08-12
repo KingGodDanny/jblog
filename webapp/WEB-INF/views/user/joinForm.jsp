@@ -18,7 +18,7 @@
 		<c:import url="/WEB-INF/views/includes/main-header.jsp"></c:import>
 
 		<div>		
-			<form id="joinForm" method="post" action="">
+			<form id="joinForm" method="post" action="${pageContext.request.contextPath }/user/join">
 				<table>
 			      	<colgroup>
 						<col style="width: 100px;">
@@ -73,7 +73,6 @@
 	
 	//Form 전송 버튼을 클릭했을때 
 	$("#joinForm").on("submit", function () {
-		event.preventDefault();
 		console.log("form 전송 클릭!")
 		
 		//아이디 입력체크
@@ -108,7 +107,7 @@
 			return false;
 		}
 		
-		return false;
+		return true;
 	})
 	
 	

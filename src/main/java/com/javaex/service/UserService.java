@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.javaex.dao.BlogDao;
+import com.javaex.dao.CategoryDao;
 import com.javaex.dao.UserDao;
 import com.javaex.vo.UserVo;
 
@@ -16,6 +17,9 @@ public class UserService {
 	@Autowired
 	private BlogDao blogDao;
 	
+	@Autowired
+	private CategoryDao categoryDao;
+	
 	//회원가입하기
 	public int join(UserVo userVo) {
 		System.out.println("UserService.join()");
@@ -23,7 +27,11 @@ public class UserService {
 		//회원가입
 		int count = userDao.userInsert(userVo);
 		
+		//블로그생성을 위한 회원가입정도 넘겨주기
+		blogDao.insertBlog(userVo);
 		
+		//카테고리생성을 위한 정보 넘겨주기
+		categoryDao.insertCategory(userVo);
 		
 		return count;
 	}
