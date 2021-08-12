@@ -8,6 +8,7 @@
 <title>JBlog</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/jblog.css">
 
+<script type="text/javascript" src="${pageContext.request.contextPath }/assets/js/jquery/jquery-1.12.4.js"></script>
 
 </head>
 
@@ -19,8 +20,8 @@
 
 		<div id="content">
 			<ul id="admin-menu" class="clearfix">
-				<li class="tabbtn selected"><a href="">기본설정</a></li>
-				<li class="tabbtn"><a href="">카테고리</a></li>
+				<li class="tabbtn"><a href="${pageContext.request.contextPath}/${authUser.id}/admin/basic">기본설정</a></li>
+				<li class="tabbtn selected"><a href="${pageContext.request.contextPath}/${authUser.id}/admin/category">카테고리</a></li>
 				<li class="tabbtn"><a href="">글작성</a></li>
 			</ul>
 			<!-- //admin-menu -->
@@ -46,24 +47,7 @@
 		      		</thead>
 		      		<tbody id="cateList">
 		      			<!-- 리스트 영역 -->
-		      			<tr>
-							<td>1</td>
-							<td>자바프로그래밍</td>
-							<td>7</td>
-							<td>자바기초와 객체지향</td>
-						    <td class='text-center'>
-						    	<img class="btnCateDel" src="${pageContext.request.contextPath}/assets/images/delete.jpg">
-						    </td>
-						</tr>
-						<tr>
-							<td>2</td>
-							<td>오라클</td>
-							<td>5</td>
-							<td>오라클 설치와 sql문</td>
-						    <td class='text-center'>
-						    	<img class="btnCateDel" src="${pageContext.request.contextPath}/assets/images/delete.jpg">
-						    </td>
-						</tr>
+		      			
 						<!-- 리스트 영역 -->
 					</tbody>
 				</table>
@@ -75,15 +59,16 @@
 					</colgroup>
 		      		<tr>
 		      			<td class="t">카테고리명</td>
-		      			<td><input type="text" name="name" value=""></td>
+		      			<td><input type="text" id="cate-cateName" name="name" value=""></td>
 		      		</tr>
 		      		<tr>
 		      			<td class="t">설명</td>
-		      			<td><input type="text" name="desc"></td>
+		      			<td><input type="text" id="cate-description" name="desc"></td>
 		      		</tr>
 		      	</table> 
 			
 				<div id="btnArea">
+					<input type="hidden" id="cate-id" name="id" value="${blogVo.id }">	<!-- 블컨에서 포워드해준 id같이보내기 -->
 		      		<button id="btnAddCate" class="btn_l" type="submit" >카테고리추가</button>
 		      	</div>
 			
@@ -101,7 +86,152 @@
 	<!-- //wrap -->
 </body>
 
+<script type="text/javascript">
 
+ 	//화면 로딩되기 직전!
+	$(document).ready(function() {
+		console.log("화면 로딩 직전");
+		
+		//ajax 요청하기
+		$.ajax({
+			
+			url : "${pageContext.request.contextPath }/${id}/admin/category/list",		//여기부터 4줄은 요청을 하는구간이다. 요청해서 리스트 올때까지 기다리지않는다. 시켜놓고 다른코드를 실행한다.
+			type : "post",
+			//contentType : "application/json",
+			//data : {name: ”홍길동"},
+
+// 			dataType : "json",					
+			success : function(cateList){
+				/*성공시 처리해야될 코드 작성*/
+				console.log(cateList);
+				
+				//화면에그리기
+				for(var i=0; i<cateList.length; i++) {
+					render(cateList[i], "down");
+				}			
+			
+				
+			},
+			error : function(XHR, status, error) {
+				console.error(status + " : " + error);
+			}
+		});
+		
+		
+		
+	});
+
+ 	
+ 	//카테고리명, 설명 추가하기!
+ 	$("#btnAddCate").on("click", function (){
+		console.log("카테고리추가!!")
+ 		
+ 		var categoryVo = {
+ 				id: $("#cate-id").val(),
+ 				cateName: $("#cate-cateName").val(),
+ 				description: $("#cate-description").val()
+ 		};
+ 		console.log(categoryVo);
+		
+		//데이터 ajax방식으로 서버에 전송	
+		$.ajax({
+			url : "${pageContext.request.contextPath }/${id}/admin/category/write" ,
+			type : "post",
+//	 		contentType : "application/json",
+			data : categoryVo ,	
+
+
+			dataType : "json",
+			success : function(resultCateVo){
+
+				/*성공시 처리해야될 코드 작성*/
+				console.log(resultCateVo);
+				render(resultCateVo, "up");
+				
+				//입력했던것들 초기화
+				$("#cate-cateName").val("");
+				$("#cate-description").val("");
+				
+			},
+			error : function(XHR, status, error) {
+				console.error(status + " : " + error);
+			}
+		});
+		
+		
+		
+	});
+ 	
+ 	
+ 	//카테고리 리스트에서 삭제버튼 클릭
+ 	$("#cateList").on("click", ".btnCateDel", function () {
+		console.log("카테고리 삭제버튼클릭");
+ 		
+		//cateNo 입력하기
+		var cateNo = $(this).data("no");
+		console.log(cateNo);
+		
+		//서버에 삭제요청 (cateNo 전달)
+		$.ajax({
+				
+			url : "${pageContext.request.contextPath }/${id}/admin/category/remove",		
+			type : "post",
+			//contentType : "application/json",
+			data : {cateNo: cateNo},
+
+			dataType : "json",
+			success : function(result){
+				/*성공시 처리해야될 코드 작성*/
+				
+				if(result == false) {
+					alert("삭제할 수 없습니다.")
+				} else if(result == true) {
+					
+					$("#t-" + cateNo).remove();
+				}
+				
+				
+				
+			},
+			error : function(XHR, status, error) {
+				console.error(status + " : " + error);
+			}
+			
+		});
+		
+	});
+ 	
+ 	
+	
+ 	//카테고리 1개씩 렌더링
+ 	function render(categoryVo, type) {
+		
+ 		var str = "";
+ 		
+ 		str += '<tr id=t-' + categoryVo.cateNo + '>';
+ 		str += '	<td>' + categoryVo.cateNo + '</td>';
+ 		str += '	<td>' + categoryVo.cateName + '</td>';
+ 		str += '	<td>' + categoryVo.pCount + '</td>';
+ 		str += '	<td>' + categoryVo.description + '</td>';
+ 		str += '    <td class="text-center">';
+ 		str += '    	<img class="btnCateDel" data-no="' + categoryVo.cateNo + '"src="${pageContext.request.contextPath}/assets/images/delete.jpg">';
+ 		str += '    </td>';
+ 		str += '</tr>';
+ 		
+ 		if(type === 'down') {
+ 			
+ 			$("#cateList").append(str);
+ 			
+ 		} else if(type === 'up') {
+ 			$("#cateList").prepend(str);
+ 		}
+ 		
+ 		
+	};
+
+
+
+</script>
 
 
 </html>

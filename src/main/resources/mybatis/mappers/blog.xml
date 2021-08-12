@@ -6,10 +6,9 @@
 	<!-- 블로그생성 -->
 	<insert id="insertBlog" parameterType="com.javaex.vo.BlogVo">
 		<![CDATA[
-			INSERT INTO blog
+			INSERT INTO blog(id, blogTitle)
 			VALUES(#{id} ,
-				   #{blogTitle},
-				   #{logoFile}
+				   #{blogTitle}
 				   )
 		]]>	
 	</insert>
@@ -28,5 +27,25 @@
 		]]>
 	</select>
 
+
+	<!-- 블로그타이틀, 로고파일 업로드 -->
+	<update id="basicUpload" parameterType="com.javaex.vo.BlogVo">
+		<![CDATA[
+			update blog
+			set blogTitle = #{blogTitle},
+    			logoFile =  #{logoFile}
+			where id = #{id}
+		]]>
+	</update>
+
+	
+	<!-- 블로그타이틀 업로드 -->
+	<update id="titleUpload" parameterType="com.javaex.vo.BlogVo">
+		<![CDATA[
+			update blog
+			set blogTitle = #{blogTitle}
+			where id = #{id}
+		]]>
+	</update>
 
 </mapper>

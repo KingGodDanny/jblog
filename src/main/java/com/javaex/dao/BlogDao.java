@@ -19,9 +19,8 @@ public class BlogDao {
 		
 		String id = userVo.getId();
 		String blogTitle = userVo.getUserName() + "의 블로그입니다.";
-		String logoFile = "";
 		
-		BlogVo blogVo = new BlogVo(id, blogTitle, logoFile);
+		BlogVo blogVo = new BlogVo(id, blogTitle);
 		
 		sqlSession.insert("blog.insertBlog", blogVo);
 		
@@ -39,6 +38,20 @@ public class BlogDao {
 	}
 	
 	
+	//블로그 기본설정 업로드
+	public void upload(BlogVo blogVo) {
+		System.out.println("블로그다오 업로드현장");
+		
+		sqlSession.update("blog.basicUpload", blogVo);
+		
+	}
+	
+	//블로그 타이틀만 업로드
+	public void uploadTitle(BlogVo blogVo) {
+		
+		sqlSession.update("blog.titleUpload", blogVo);
+		
+	}
 	
 	
 }
