@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,11 +25,13 @@ public class CategoryController {
 	//리스트 요청
 	@ResponseBody
 	@RequestMapping(value = "/{id}/admin/category/list", method = {RequestMethod.GET, RequestMethod.POST})
-	public List<CategoryVo> cateList(@PathVariable("id") String id) {
+	public List<CategoryVo> cateList(@PathVariable("id") String id, Model model) {
 		
 		//메인화면에서 왼쪽하단에 목록이 뿌려져야하니깐 리스트로 메잌!
 		List<CategoryVo> cateList = categoryService.getCate(id);
 		
+		//모델어트리뷰트 구간에 담아놓기
+		model.addAttribute("cateList" ,cateList);
 		
 		return cateList;
 		
