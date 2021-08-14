@@ -41,12 +41,13 @@ public class PostController {
 	
 	//포스트 등록하기
 	@RequestMapping(value = "/{id}/admin/basic/write", method = {RequestMethod.GET, RequestMethod.POST})
-	public String postWrite(@ModelAttribute PostVo postVo) {
+	public String postWrite(@ModelAttribute PostVo postVo, @PathVariable("id") String id, Model model) {
 		System.out.println("포스트라이트: "+ postVo);
 		
+		model.addAttribute("blogId", id);
 		postService.postWrite(postVo);
 		
-		return null;
+		return "redirect:/"+ id +"/admin/write";
 	}
 		
 }
