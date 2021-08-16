@@ -68,7 +68,7 @@
 		      	</table> 
 			
 				<div id="btnArea">
-					<input type="hidden" id="cate-id" name="id" value="${blogVo.id }">	<!-- 블컨에서 포워드해준 id같이보내기 -->
+					<input type="hidden" id="cate-id" name="id" value="${bMap.blogVo.id }">	<!-- 블컨에서 포워드해준 id같이보내기 -->
 		      		<button id="btnAddCate" class="btn_l" type="submit" >카테고리추가</button>
 		      	</div>
 			
@@ -92,13 +92,15 @@
 	$(document).ready(function() {
 		console.log("화면 로딩 직전");
 		
+// 		var id = $("#cate-id").val();
+		
 		//ajax 요청하기
 		$.ajax({
 			
-			url : "${pageContext.request.contextPath }/${id}/admin/category/list",		//여기부터 4줄은 요청을 하는구간이다. 요청해서 리스트 올때까지 기다리지않는다. 시켜놓고 다른코드를 실행한다.
+			url : "${pageContext.request.contextPath }/${id}/admin/category/list",
 			type : "post",
 			//contentType : "application/json",
-			//data : {name: ”홍길동"},
+// 			data : {id: id},
 
 // 			dataType : "json",					
 			success : function(cateList){
@@ -141,7 +143,7 @@
 			data : categoryVo ,	
 
 
-			dataType : "json",
+// 			dataType : "json",
 			success : function(resultCateVo){
 
 				/*성공시 처리해야될 코드 작성*/

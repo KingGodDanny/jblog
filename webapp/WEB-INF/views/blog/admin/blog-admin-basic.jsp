@@ -34,17 +34,17 @@
 						</colgroup>
 			      		<tr>
 			      			<td><label for="textTitle">블로그 제목</label></td>
-			      			<td><input id="textTitle" type="text" name="blogTitle" value="${blogVo.blogTitle }"></td>
+			      			<td><input id="textTitle" type="text" name="blogTitle" value="${bMap.blogVo.blogTitle }"></td>
 			      		</tr>
 			      		<tr>
 			      			<td><label>로고이미지</label></td>
 			      			
-			      			<c:if test="${empty blogVo.logoFile }">
+			      			<c:if test="${empty bMap.blogVo.logoFile }">
 			      				<td class="text-left"><img src="${pageContext.request.contextPath}/assets/images/spring-logo.jpg"></td>   
 			      			</c:if>
 			      			
-			      			<c:if test="${not empty blogVo.logoFile}">
-			      				<td class="text-left"><img src="${pageContext.request.contextPath}/upload/${blogVo.logoFile}"></td>   
+			      			<c:if test="${not empty bMap.blogVo.logoFile}">
+			      				<td class="text-left"><img src="${pageContext.request.contextPath}/upload/${bMap.blogVo.logoFile}"></td>   
 			      			</c:if>
 			      			
 			      		</tr>      		

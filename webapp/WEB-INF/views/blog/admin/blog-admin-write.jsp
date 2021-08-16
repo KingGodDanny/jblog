@@ -40,7 +40,7 @@
 				      		<td>
 				      			<select name="cateNo">
 				      				<!-- 카테고리 리스트 영역--뽀문으로 카테네임과 카테번호뿌려주기-->
-				      				<c:forEach items="${postList }" var="postList">
+				      				<c:forEach items="${bMap.postList }" var="postList">
 					      				<option value="${postList.cateNo }">${postList.cateName }</option>
 				      				</c:forEach>
 				      				<!-- 카테고리 리스트 영역 -->
