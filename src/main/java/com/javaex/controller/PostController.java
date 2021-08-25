@@ -1,6 +1,7 @@
 package com.javaex.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,8 +30,9 @@ public class PostController {
 	public String post(@PathVariable("id") String id, Model model) {
 		System.out.println("여기는 포스트포워드전이다: " + id);
 
-		BlogVo blogVo = blogService.getBlog(id);
-		model.addAttribute("blogVo", blogVo);
+		Map<String,Object> bMap = blogService.getBlogMain(id);
+		
+		model.addAttribute("bMap", bMap);
 
 		List<PostVo> postList = postService.getPost(id);
 
@@ -43,11 +45,13 @@ public class PostController {
 	@RequestMapping(value = "/{id}/admin/basic/write", method = {RequestMethod.GET, RequestMethod.POST})
 	public String postWrite(@ModelAttribute PostVo postVo, @PathVariable("id") String id, Model model) {
 		System.out.println("포스트라이트: "+ postVo);
-		
+
 		model.addAttribute("blogId", id);
+		System.out.println("컨트롤러 모델 :" + model);
+		//////
 		postService.postWrite(postVo);
-		
-		return "redirect:/"+ id +"/admin/write";
+		System.out.println("포스트컨트롤러Vo :"+postVo);
+		return "redirect:/"+ id +"/admin/writeForm";
 	}
 		
 }

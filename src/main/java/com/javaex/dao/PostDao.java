@@ -20,7 +20,7 @@ public class PostDao {
 
 		List<PostVo> postList = sqlSession.selectList("post.getPost", id);
 
-		System.out.println(postList);
+		System.out.println("포스트dao: " + postList);
 
 		return postList;
 	}
@@ -33,4 +33,10 @@ public class PostDao {
 		sqlSession.insert("postWrite", postVo);
 		
 	}
+	
+
+	
+	
+	
+	
 }
