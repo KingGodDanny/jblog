@@ -4,6 +4,9 @@ import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,23 +14,58 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.javaex.dao.BlogDao;
+import com.javaex.dao.CategoryDao;
+import com.javaex.dao.PostDao;
 import com.javaex.vo.BlogVo;
+import com.javaex.vo.CategoryVo;
+import com.javaex.vo.PostVo;
 
 @Service
 public class BlogService {
 
 	@Autowired
 	private BlogDao blogDao;
+	@Autowired
+	private CategoryDao categoryDao;
+	@Autowired
+	private PostDao postDao;
 	
 	
-	//아이디를 통해 Blog 하나가져오기
-	public BlogVo getBlog(String id) {
+	//아이디를 통해 블로그관리를 하는것!
+	public BlogVo getBlogAdmin(String id) {
 		System.out.println("블로그서비스랑 아이디: " + id);
 		
 		BlogVo blogVo = blogDao.getBlog(id);
 		
 		return blogVo;
 	}
+	
+	
+	//2021-08-15 by대근
+	//아이디를 통해 각종 필요한 정보들을 불러모을 서비스!
+	public Map<String, Object> getBlogMain(String id) {
+		System.out.println("블로그서비스랑 아이디: " + id);
+		
+		
+		//블로그 가져오기
+		BlogVo blogVo = blogDao.getBlog(id);
+		System.out.println("blogVo " + blogVo);
+		//카테고리리스트 가져오기
+		List<CategoryVo> cateList = categoryDao.getCate(id);
+		System.out.println("서비스(cateList) : " + cateList);
+		//포스트리스트 가져오기
+		List<PostVo> postList = postDao.getPost(id);
+		System.out.println("서비스(포스트 리스트)): " + postList);	//포카 15
+		
+		Map<String, Object> bMap = new HashMap<String, Object>();
+		
+		bMap.put("blogVo", blogVo);
+		bMap.put("cateList", cateList);
+		bMap.put("postList", postList);
+		
+		return bMap;
+	}
+	
 	
 	
 	//블로그 업로드!

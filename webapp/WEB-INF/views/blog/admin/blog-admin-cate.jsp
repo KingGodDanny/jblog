@@ -94,30 +94,11 @@
 		
 // 		var id = $("#cate-id").val();
 		
-		//ajax 요청하기
-		$.ajax({
-			
-			url : "${pageContext.request.contextPath }/${id}/admin/category/list",
-			type : "post",
-			//contentType : "application/json",
-// 			data : {id: id},
-
-// 			dataType : "json",					
-			success : function(cateList){
-				/*성공시 처리해야될 코드 작성*/
-				console.log(cateList);
-				
-				//화면에그리기
-				for(var i=0; i<cateList.length; i++) {
-					render(cateList[i], "down");
-				}			
-			
-				
-			},
-			error : function(XHR, status, error) {
-				console.error(status + " : " + error);
-			}
-		});
+		
+		
+		
+		fetchList();
+		
 		
 		
 		
@@ -202,6 +183,45 @@
 		});
 		
 	});
+ 	
+ 	
+ 	//리스트
+ 	function fetchList(){
+ 		var id = "${blogVo.id}"
+ 		
+ 		
+ 		
+ 		//ajax 요청하기
+ 		$.ajax({
+ 			
+ 			url : "${pageContext.request.contextPath }/${id}/admin/category/list",
+ 			type : "post",
+ 			//contentType : "application/json",
+// 				data : {id: id},
+
+// 				dataType : "json",					
+ 			success : function(cateList){
+ 				/*성공시 처리해야될 코드 작성*/
+ 				console.log(cateList);
+ 				
+ 				//화면에그리기
+ 				for(var i=0; i<cateList.length; i++) {
+ 					render(cateList[i], "down");
+ 				}			
+ 			
+ 				
+ 			},
+ 			error : function(XHR, status, error) {
+ 				console.error(status + " : " + error);
+ 			}
+ 		});
+ 		
+ 		
+ 		
+ 	};
+ 	
+ 	
+ 	
  	
  	
 	

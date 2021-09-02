@@ -32,7 +32,7 @@ public class BlogDao {
 		System.out.println("블로그다오랑 아이디: " + id);
 		
 		BlogVo blogVo = sqlSession.selectOne("blog.getBlog", id);
-		System.out.println(blogVo);
+		System.out.println("블로그dao : " + blogVo);
 		
 		return blogVo;
 	}
