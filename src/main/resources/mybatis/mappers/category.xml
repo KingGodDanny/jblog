@@ -20,17 +20,21 @@
 	<!-- 카테고리 리스트 출력용 -->
 	<select id="cateSelect" parameterType="String" resultType="com.javaex.vo.CategoryVo">
 		<![CDATA[
-			select c.id,
-     				   c.cateNo,
-      				   c.cateName,
-      				   c.description,
-      				   c.regdate regDate,
-      				   (select count(p.cateno)
-       				from post) as pCount
-			from category c LEFT outer join post p
-				 on p.cateno = c.cateno
-			where c.id = #{id}
-			order by c.cateno desc
+			 select  c.cateNo,
+              		 c.id,
+              		 c.cateName,
+            		 c.description,
+             		 c.regDate,
+              		 count(p.cateNo) as postCount
+     		 from category c, post p
+      		 where c.cateNo = p.cateNo(+)
+     		 and c.id = #{id}
+      		 group by c.cateNo, 
+               	 	  c.id,
+               		  c.cateName,
+               		  c.description,
+               		  c.regDate
+      		 order by c.cateNo desc
 		]]>
 	</select>
 	
@@ -54,23 +58,45 @@
 		]]>
 	</insert>
 		
-		
-	<!-- cateNo를 이용한 카테고리 리스트 출력용 -->
 	<select id="selectCategory" parameterType="int" resultType="com.javaex.vo.CategoryVo">
 		<![CDATA[
-			select c.id,
-     				   c.cateNo,
-      				   c.cateName,
-      				   c.description,
-      				   c.regdate regDate,
-      				   (select count(p.cateno)
-       				from post) as pCount
-			from category c LEFT outer join post p
-				 on p.cateno = c.cateno
-			where c.cateno = #{cateno}
-			order by c.cateno desc
+			select c.catename,
+				   c.id,
+				   c.description,
+				   c.regDate,
+				   c.cateNo,
+				   nvl(b.count,0) as pCount
+			from category c left join (select cateno,
+                                  			  count(*) as count
+				          			   from post
+				          			   group by cateno) b
+									   on c.cateno = b.cateno
+									   where c.cateno = #{cateNo}
 		]]>
-	</select>
+	</select>	
+		
+		
+		
+	<!-- cateNo를 이용한 카테고리 리스트 출력용 
+	<select id="selectCategory" parameterType="int" resultType="com.javaex.vo.CategoryVo">
+		<![CDATA[
+			select  c.cateNo,
+        			c.id,
+        			c.cateName,
+       				c.description,
+        			c.regDate,
+        			count(p.cateNo) as pCount
+			from category c, post p
+			where c.cateNo = p.cateNo(+)
+			and c.cateNo = #{cateNo}
+			group by c.cateNo, 
+         			 c.id,
+        			 c.cateName,
+       			     c.description,
+        			 c.regDate
+			order by c.cateNo desc
+		]]>
+	</select> -->
 		
 		
 	<!-- 카테고리 삭제 -->
@@ -80,7 +106,8 @@
 			WHERE cateNo = #{cateNo}
 		]]>	
 	</delete>
-	
+
+
 	
 	<!-- 포스트 카운트 출력용 -->
 	<select id="countSelect" parameterType="int" resultType="com.javaex.vo.CategoryVo">

@@ -26,12 +26,13 @@ public class CategoryController {
 	@ResponseBody
 	@RequestMapping(value = "/{id}/admin/category/list", method = {RequestMethod.GET, RequestMethod.POST})
 	public List<CategoryVo> cateList(@PathVariable("id") String id, Model model) {
+		System.out.println("컨트롤러 아이디" + id);
 		
 		//메인화면에서 왼쪽하단에 목록이 뿌려져야하니깐 리스트로 메잌!
 		List<CategoryVo> cateList = categoryService.getCate(id);
 		
-		//모델어트리뷰트 구간에 담아놓기
-		model.addAttribute("cateList" ,cateList);
+		System.out.println("컨트롤러 리스트 : " + cateList);
+		
 		
 		return cateList;
 		

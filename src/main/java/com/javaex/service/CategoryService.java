@@ -14,11 +14,12 @@ public class CategoryService {
 	@Autowired
 	private CategoryDao categoryDao;
 	
-	
 	//카테고리 리스트 가져오기
 	public List<CategoryVo> getCate(String id) {
+		System.out.println("서비스아이디 " + id);
 		
 		List<CategoryVo> cateList = categoryDao.getCate(id);
+		System.out.println("서비스 리스트 :" + cateList);
 		
 		return cateList;
 		
@@ -36,6 +37,7 @@ public class CategoryService {
 		
 		//cateNo 추출!!
 		int cateNo = categoryVo.getCateNo();
+		System.out.println("카써 구간 카테노: " + cateNo);
 		
 		//제이슨해줄 글가져오기
 		CategoryVo resultCateVo = categoryDao.selectCategory(cateNo); 
@@ -50,17 +52,22 @@ public class CategoryService {
 		CategoryVo pCount = categoryDao.countSelect(cateNo);
 		
 		int postCount = pCount.getpCount();
+		System.out.println(postCount);
 		
-		if(postCount == 0) {
+		if(postCount > 0 || postCount < 0 ) {
+			
+			
+			return false;
+			
+		} else {
 			
 			categoryDao.remove(cateNo);
 			
 			return true;
-			
-		} else {
-			
-			return false;
 		}
 		
 	}
+	
+	
+	
 }

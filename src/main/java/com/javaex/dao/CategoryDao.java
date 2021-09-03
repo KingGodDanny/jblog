@@ -32,10 +32,9 @@ public class CategoryDao {
 	
 	////카테고리 리스트 가져오기
 	public List<CategoryVo> getCate(String id) {
-		
+		System.out.println("다오 id" + id);
 		List<CategoryVo> cateList = sqlSession.selectList("category.cateSelect" ,id);
-		System.out.println("xml갓다온 리스트 제발: " + cateList);
-		
+		System.out.println("카테 dao:: " + cateList);
 		
 		return cateList;
 	}
@@ -77,7 +76,7 @@ public class CategoryDao {
 	//포스트 카운트 가져오기
 	public CategoryVo countSelect(int cateNo) {
 		CategoryVo pCount = sqlSession.selectOne("category.countSelect", cateNo);
-		System.out.println(pCount.getpCount());
+		System.out.println("서비스 카운트:" + pCount);
 		
 		return pCount;
 	}
